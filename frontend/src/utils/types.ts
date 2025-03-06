@@ -6,12 +6,13 @@ interface User {
     createdAt:string
     updatedAt: string
 }
+type Issuer = User&string
 export interface Ticket {
     _id: string
     title: string
     description: string
     status: string
-    issuer: string|User
+    issuer: Issuer
     createdAt: Date
     updatedAt: Date
 }
