@@ -14,7 +14,7 @@ export default class UserDashboard extends Component {
     render(): ReactNode {
         const { appState:{ tickets } } = this.context
         return (
-            <div className="w-11/12 sm:w-10/12 md:w-9/12 lg:w-8/12 xl:w-7/12 mx-auto py-7 min-h-screen flex flex-col sm:flex-row gap-4 text-sm">
+            <div className="w-full sm:w-10/12 md:w-9/12 lg:w-8/12 xl:w-7/12 mx-auto py-7 min-h-screen flex flex-col sm:flex-row gap-4 text-sm">
                 <TicketForm />
                 <div className="flex flex-col gap-4 mt-5">
                     { tickets.length < 1 && (<div>No ticket found please create new</div>) }
