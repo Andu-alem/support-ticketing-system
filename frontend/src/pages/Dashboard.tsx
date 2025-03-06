@@ -49,7 +49,6 @@ export default class Dashboard extends Component {
                     Authorization: `Bearer ${ token }`
                 }
             })
-            console.log("We are here andi", response.data)
             setTicket(response.data.tickets)
         } catch {
             return

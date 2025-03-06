@@ -13,7 +13,8 @@ export default class TicketForm extends Component {
     state = {
         title: '',
         description: '',
-        showFixedForm: false
+        showFixedForm: false,
+        sending: false
     }
 
     static contextType?: React.Context<ContextType|null> = AppContext
@@ -28,7 +29,8 @@ export default class TicketForm extends Component {
     updateTickets = async (token:string) => {
         try {
             const { setTicket } = this.context
-            const response = await axios.get('http://localhost:3001/tickets',{
+            const base_url = import.meta.env.VITE_BACKEND_URL
+            const response = await axios.get(`${base_url}/tickets`,{
                 headers: {
                     Authorization: `Bearer ${ token }`
                 }
@@ -42,6 +44,7 @@ export default class TicketForm extends Component {
     submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
+            this.setState({ sending: true })
             const { title, description } = this.state
             const { appState } = this.context
             const base_url = import.meta.env.VITE_BACKEND_URL
@@ -54,14 +57,16 @@ export default class TicketForm extends Component {
                 }
             })
             this.updateTickets(appState.token)
+            this.setState({ sending: false })
             this.setState({ showFixedForm: false })
         } catch {
+            this.setState({ sending: false })
             return
         }
     }
 
     render(): ReactNode {
-        const { showFixedForm } = this.state
+        const { showFixedForm, sending } = this.state
         return (
             <div className="">
                 <div className="sticky top-12">
@@ -78,7 +83,7 @@ export default class TicketForm extends Component {
                         <form className="flex flex-col items-center" onSubmit={ this.submitHandler }>
                             <Input type="text" label="Title" setValue={ this.setTitle } />
                             <TextArea label="Description" setValue={ this.setDescription } />
-                            <Button title="Create New" />
+                            <Button title="Create New" animate={ sending } />
                         </form>
                     </div>
                     <div 
