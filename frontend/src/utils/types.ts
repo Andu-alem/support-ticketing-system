@@ -1,9 +1,17 @@
+interface User {
+    _id: string
+    username: string
+    email: string
+    role: string
+    createdAt:string
+    updatedAt: string
+}
 export interface Ticket {
     _id: string
     title: string
     description: string
     status: string
-    issuer: string|object
+    issuer: string|User
     createdAt: Date
     updatedAt: Date
 }
