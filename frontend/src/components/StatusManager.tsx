@@ -24,7 +24,8 @@ export default class StatusManager extends Component<Props> {
         try {
             const { ticketId } = this.props
             const { appState:{ token } } = this.context
-            const response = await axios.put(`http://localhost:3001/tickets/${ticketId}`,{
+            const base_url = import.meta.env.VITE_BACKEND_URL
+            const response = await axios.put(`${base_url}/tickets/${ticketId}`,{
                 status
             },{
                 headers: {
