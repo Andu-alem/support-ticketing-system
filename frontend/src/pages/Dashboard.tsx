@@ -57,7 +57,8 @@ export default class Dashboard extends Component {
 
     validateToken = async (token:string) => {
         try {
-            const response = await axios.get('http://localhost:3001/verify_token',{
+            const base_url = import.meta.env.VITE_BACKEND_URL
+            const response = await axios.get(`${base_url}/verify_token`,{
                 headers: {
                     Authorization: `Bearer ${ token }`
                 }
