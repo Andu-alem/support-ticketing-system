@@ -1,40 +1,37 @@
-import { Component, ReactNode } from "react"
+import { useState } from "react"
 
 import { Navigate } from "react-router"
 import LoadingModal from "./LodingModal"
-import { AppContext } from "../utils/context"
-import { ContextType } from "../utils/types"
+import { useAppContext } from "../utils/context"
 
-export default class LogoutHader extends Component {
-    state = {
-        shouldRedirect: false,
-        redirectTo: '',
-        redirecting: false
-    }
+export default function LogoutHeader() {
+    const { userState:{ username }, setUserState } = useAppContext()
+    const [shouldRedirect, setShouldRedirect] = useState(false)
+    const [redirectTo, setRedirectTo] = useState('')
+    const [redirecting, setRedirecting] = useState(false)
 
-    static contextType?: React.Context<ContextType|null> = AppContext
-    declare context:ContextType
-
-    logoutHandler = () => {
-        const { setToken, setIsLoggedIn } = this.context
+    const logoutHandler = () => {
         localStorage.removeItem('token')
-        setToken('')
-        setIsLoggedIn(false)
-        this.setState({ redirecting: true, shouldRedirect: true, redirectTo: '/login' })
+        setUserState({
+            username: '',
+            token: '',
+            isLoggedIn: false,
+            role: ''
+        })
+        setRedirecting(true)
+        setShouldRedirect(true)
+        setRedirectTo('/login')
     }
 
-    render(): ReactNode {
-        const { shouldRedirect, redirectTo, redirecting } = this.state
-        return (
-            <div className="fixed top-0 sm:static w-full bg-gray-50 p-5 sm:p-0 flex justify-between sm:pb-2 mb-3 border-b border-gray-300">
-                { shouldRedirect && <Navigate replace to={ redirectTo } /> }
-                <LoadingModal showModal={ redirecting } />
-                <span className="font-semibold capitalize">{ this.context.appState.username }</span>
-                <button 
-                    className="ring-2 ring-indigo-500 rounded-md px-3 h-6 text-indigo-700 font-semibold hover:bg-indigo-50 cursor-pointer"
-                    onClick={ this.logoutHandler }
-                >Logout</button>
-            </div>
-        )
-    }
+    return (
+        <div className="fixed top-0 sm:static w-full bg-gray-50 p-5 sm:p-0 flex justify-between sm:pb-2 mb-3 border-b border-gray-300">
+            { shouldRedirect && <Navigate replace to={ redirectTo } /> }
+            <LoadingModal showModal={ redirecting } />
+            <span className="font-semibold capitalize">{ username }</span>
+            <button 
+                className="ring-2 ring-indigo-500 rounded-md px-3 h-6 text-indigo-700 font-semibold hover:bg-indigo-50 cursor-pointer"
+                onClick={ logoutHandler }
+            >Logout</button>
+        </div>
+    )
 }

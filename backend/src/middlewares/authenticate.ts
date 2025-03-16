@@ -8,7 +8,7 @@ const SECRET = process.env.JWT_SECRET;
 if (!SECRET) throw new Error("No jwt secret found.")
 
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.header("Authorization")?.replace("Bearer ", "");
+    const token = await req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
         res.status(401).json({ message: "Access denied." });

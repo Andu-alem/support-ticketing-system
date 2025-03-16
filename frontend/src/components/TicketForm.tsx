@@ -1,99 +1,38 @@
-import { Component, ReactNode } from "react";
-import Input from "./Input";
-import Button from "./Button";
-import TextArea from "./TextArea";
-import axios from "axios";
-import { PlusIcon, XIcon } from "lucide-react";
+import { useEffect, useState } from "react"
+import Input from "./Input"
+import Button from "./Button"
+import TextArea from "./TextArea"
+import useTicketMutation from "../hooks/ticket-mutation"
 
-import { AppContext } from "../utils/context"
-import { ContextType } from "../utils/types"
-import LogoutHader from "./LogoutHeader";
+interface Props {
+    className?: string
+    setShowFixedForm: (arg:boolean) => void
+    refetchTickets: () => void 
+}
 
-export default class TicketForm extends Component {
-    state = {
-        title: '',
-        description: '',
-        showFixedForm: false,
-        sending: false
-    }
+export default function TicketForm({ className, setShowFixedForm, refetchTickets }:Props) {
+    const { sending, success, error, createTicket } = useTicketMutation()
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
 
-    static contextType?: React.Context<ContextType|null> = AppContext
-    declare context:ContextType
 
-    setTitle = (title:string) => {
-        this.setState({ title })
-    }
-    setDescription = (description:string) => {
-        this.setState({ description })
-    }
-    updateTickets = async (token:string) => {
-        try {
-            const { setTicket } = this.context
-            const base_url = import.meta.env.VITE_BACKEND_URL
-            const response = await axios.get(`${base_url}/tickets`,{
-                headers: {
-                    Authorization: `Bearer ${ token }`
-                }
-            })
-            setTicket(response.data.tickets)
-        } catch {
-            return
-        }
-    }
+    useEffect(() => {
+        if (!success) return
+        refetchTickets()
+        setShowFixedForm(false)
+    },[success, sending, refetchTickets, setShowFixedForm])
 
-    submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        try {
-            this.setState({ sending: true })
-            const { title, description } = this.state
-            const { appState } = this.context
-            const base_url = import.meta.env.VITE_BACKEND_URL
-            await axios.post(`${base_url}/tickets`,{
-                title,
-                description
-            },{
-                headers: {
-                    Authorization: `Bearer ${ appState.token }`
-                }
-            })
-            this.updateTickets(appState.token)
-            this.setState({ sending: false })
-            this.setState({ showFixedForm: false })
-        } catch {
-            this.setState({ sending: false })
-            return
-        }
+        createTicket(title, description)
     }
 
-    render(): ReactNode {
-        const { showFixedForm, sending } = this.state
-        return (
-            <div className="">
-                <div className="sticky top-12">
-                    <LogoutHader />
-                    <form className="hidden sm:flex flex-col items-center" onSubmit={ this.submitHandler }>
-                        <Input type="text" label="Title" setValue={ this.setTitle } />
-                        <TextArea label="Description" setValue={ this.setDescription } />
-                        <Button title="Create New" />
-                    </form>
-                    <div className={`${ showFixedForm ? 'block':'hidden' } sm:hidden w-screen h-screen bg-gray-50 fixed top-0 flex flex-col justify-center items-center`}>
-                        <div className="absolute top-10 right-12">
-                            <XIcon className="text-indigo-700 border border-indigo-700 rounded-full cursor-pointer" onClick={ () => this.setState({ showFixedForm: false }) } />
-                        </div>
-                        <form className="flex flex-col items-center" onSubmit={ this.submitHandler }>
-                            <Input type="text" label="Title" setValue={ this.setTitle } />
-                            <TextArea label="Description" setValue={ this.setDescription } />
-                            <Button title="Create New" animate={ sending } />
-                        </form>
-                    </div>
-                    <div 
-                        className={`${ showFixedForm ? 'hidden':'fixed' } sm:hidden bottom-5 right-5 bg-indigo-700 w-10 h-10 rounded-full flex justify-center items-center hover:opacity-95 cursor-pointer`}
-                        onClick={ () => this.setState({ showFixedForm: true }) }
-                    >
-                        <PlusIcon className="text-white" />
-                    </div>
-                </div>
-            </div>
-        ) 
-    }
+    return (
+        <form className={`flex flex-col items-center ${className}`} onSubmit={ submitHandler }>
+            <Input type="text" label="Title" setValue={ setTitle } />
+            <TextArea label="Description" setValue={ setDescription } />
+            <Button title="Create New" animate={ sending } />
+            { error && <p className="text-xs">Oops! Please try again.</p> }
+        </form>
+    )
 }

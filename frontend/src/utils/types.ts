@@ -7,6 +7,7 @@ interface User {
     updatedAt: string
 }
 type Issuer = User&string
+
 export interface Ticket {
     _id: string
     title: string
@@ -17,19 +18,14 @@ export interface Ticket {
     updatedAt: Date
 }
 
-export interface AppState {
+export interface UserState {
     token: string
     username: string
     isLoggedIn: boolean
     role: string
-    tickets: Ticket[]
 }
 
 export interface ContextType {
-    appState: AppState
-    setUsername: (arg:string) => void
-    setToken: (arg:string) => void
-    setIsLoggedIn: (arg:boolean) => void
-    setRole: (arg:string) => void
-    setTicket: (arg:Ticket[]) => void
+    userState: UserState
+    setUserState: (arg:UserState) => void
 }
