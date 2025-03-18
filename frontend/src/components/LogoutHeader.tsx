@@ -7,7 +7,6 @@ import { useAppContext } from "../utils/context"
 export default function LogoutHeader() {
     const { userState:{ username }, setUserState } = useAppContext()
     const [shouldRedirect, setShouldRedirect] = useState(false)
-    const [redirectTo, setRedirectTo] = useState('')
     const [redirecting, setRedirecting] = useState(false)
 
     const logoutHandler = () => {
@@ -20,12 +19,11 @@ export default function LogoutHeader() {
         })
         setRedirecting(true)
         setShouldRedirect(true)
-        setRedirectTo('/login')
     }
 
     return (
         <div className="fixed top-0 sm:static w-full bg-gray-50 p-5 sm:p-0 flex justify-between sm:pb-2 mb-3 border-b border-gray-300">
-            { shouldRedirect && <Navigate replace to={ redirectTo } /> }
+            { shouldRedirect && <Navigate replace to="/login" /> }
             <LoadingModal showModal={ redirecting } />
             <span className="font-semibold capitalize">{ username }</span>
             <button 
