@@ -96,7 +96,7 @@ Follow these steps to set up the project locally:
     -   Frontend: `http://localhost:3000`
     -   Backend API: `http://localhost:5000`
 
-![Support Ticket](./screenshoot/support2.png)
+![Support Ticket](https://github.com/Andu-alem/support-ticketing-system/screenshoot/support2.png)
 
 ## Contributing
 
