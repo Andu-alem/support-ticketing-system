@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import { vi } from 'vitest'
+import { vi, it, describe, expect, beforEach } from 'vitest'
 import TextArea from '../components/TextArea'
 
 describe('TextArea Component', () => {

@@ -1,5 +1,5 @@
 import { render, fireEvent, screen } from '@testing-library/react'
-import { vi } from 'vitest'
+import { vi, describe, it, beforeEach, expect } from 'vitest'
 import AdminFloatingButton from '../components/AdminFloatingButton'
 
 describe('AdminFloatingButton Component', () => {
