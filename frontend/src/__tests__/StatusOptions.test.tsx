@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import { vi, it, describe, expect } from 'vitest'
+import { vi, it, describe, expect, beforeEach } from 'vitest'
 import StatusOptions from '../components/StatusOptions'
 
 describe('StatusOptions Component', () => {
