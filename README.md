@@ -44,7 +44,7 @@ Follow these steps to set up the project locally:
 1.  **Clone the repository:**
 
     ```bash
-    git clone [https://github.com/your-username/support-ticketing-system.git](https://github.com/your-username/support-ticketing-system.git)
+    git clone [https://github.com/Andu-alem/support-ticketing-system.git](https://github.com/Andu-alem/support-ticketing-system.git)
     cd support-ticketing-system
     ```
 
@@ -108,4 +108,4 @@ Contributions are welcome! If you'd like to contribute:
 
 ## License
 
-This project is licensed under the MIT License ([https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT)).
+This project is licensed under the MIT License.
