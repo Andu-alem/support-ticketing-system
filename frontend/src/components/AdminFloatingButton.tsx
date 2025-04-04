@@ -9,8 +9,9 @@ export default function AdminFloatingButton ({ toggleFixedFilter }:Props) {
     <div 
         className={`fixed sm:hidden bottom-4 right-5 bg-indigo-700 w-10 h-10 rounded-full flex justify-center items-center hover:opacity-95 cursor-pointer`}
         onClick={ toggleFixedFilter }
+        data-testid="button"
     >
-        <PlusIcon className="text-white" />
+        <PlusIcon role="action-button" className="text-white" />
     </div>
   )
 }

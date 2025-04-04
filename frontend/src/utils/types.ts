@@ -1,4 +1,4 @@
-interface User {
+export interface User {
     _id: string
     username: string
     email: string
@@ -6,7 +6,7 @@ interface User {
     createdAt:string
     updatedAt: string
 }
-type Issuer = User&string
+export type Issuer = User&string
 
 export interface Ticket {
     _id: string
